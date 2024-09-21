@@ -1,0 +1,24 @@
+services:
+  app:
+    build:
+      context: .
+    container_name: app
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    environment:
+      - JAVA_HOME=/opt/java/openjdk
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./:/app
+
+  mysql:
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=routerangers'
+      - 'MYSQL_PASSWORD=secret'
+      - 'MYSQL_ROOT_PASSWORD=verysecret'
+      - 'MYSQL_USER=myuser'
+    ports:
+      - '3306'

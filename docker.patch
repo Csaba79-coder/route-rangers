@@ -1,0 +1,141 @@
+diff --git a/Dockerfile b/Dockerfile
+new file mode 100644
+index 0000000..d422811
+--- /dev/null
++++ b/Dockerfile
+@@ -0,0 +1,27 @@
++FROM maven:3-eclipse-temurin-21-alpine AS deps
++
++WORKDIR /app
++COPY pom.xml /app
++
++RUN mvn go-offline:resolve-dependencies
++
++
++FROM maven:3-eclipse-temurin-21-alpine AS build
++
++WORKDIR /app
++COPY --from=deps /root/.m2/repository /root/.m2/repository
++COPY . /app
++
++RUN mvn package -DskipTests -o
++
++
++FROM maven:3-eclipse-temurin-21-alpine AS dev
++
++WORKDIR /app
++COPY --from=deps /root/.m2/repository /root/.m2/repository
++COPY ./docker-entrypoint.sh /docker-entrypoint.sh
++
++RUN apk add inotify-tools
++RUN chmod +x /docker-entrypoint.sh
++
++ENTRYPOINT ["/docker-entrypoint.sh"]
+diff --git a/compose.yaml b/compose.yaml
+deleted file mode 100644
+index 4d2047e..0000000
+--- a/compose.yaml
++++ /dev/null
+@@ -1,10 +0,0 @@
+-services:
+-  mysql:
+-    image: 'mysql:latest'
+-    environment:
+-      - 'MYSQL_DATABASE=mydatabase'
+-      - 'MYSQL_PASSWORD=secret'
+-      - 'MYSQL_ROOT_PASSWORD=verysecret'
+-      - 'MYSQL_USER=myuser'
+-    ports:
+-      - '3306'
+diff --git a/docker-compose.yml b/docker-compose.yml
+new file mode 100644
+index 0000000..1bcae5c
+--- /dev/null
++++ b/docker-compose.yml
+@@ -0,0 +1,24 @@
++services:
++  app:
++    build:
++      context: .
++    container_name: app
++    depends_on:
++      - mysql
++    restart: unless-stopped
++    environment:
++      - JAVA_HOME=/opt/java/openjdk
++    ports:
++      - '8080:8080'
++    volumes:
++      - ./:/app
++
++  mysql:
++    image: 'mysql:latest'
++    environment:
++      - 'MYSQL_DATABASE=routerangers'
++      - 'MYSQL_PASSWORD=secret'
++      - 'MYSQL_ROOT_PASSWORD=verysecret'
++      - 'MYSQL_USER=myuser'
++    ports:
++      - '3306'
+diff --git a/docker-entrypoint.sh b/docker-entrypoint.sh
+new file mode 100644
+index 0000000..b9e3450
+--- /dev/null
++++ b/docker-entrypoint.sh
+@@ -0,0 +1,8 @@
++#!/bin/sh
++
++while inotifywait -r -e modify /app/src/main/; 
++do 
++  mvn compile -o -DskipTests; 
++done >/dev/null 2>&1 &
++
++mvn spring-boot:run
+diff --git a/pom.xml b/pom.xml
+index beddacd..7356dd4 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -28,6 +28,7 @@
+     </scm>
+     <properties>
+         <java.version>21</java.version>
++        <go-offline-maven-plugin.version>1.2.8</go-offline-maven-plugin.version>
+     </properties>
+     <dependencies>
+         <dependency>
+@@ -49,12 +50,6 @@
+             <scope>runtime</scope>
+             <optional>true</optional>
+         </dependency>
+-        <dependency>
+-            <groupId>org.springframework.boot</groupId>
+-            <artifactId>spring-boot-docker-compose</artifactId>
+-            <scope>runtime</scope>
+-            <optional>true</optional>
+-        </dependency>
+         <dependency>
+             <groupId>com.mysql</groupId>
+             <artifactId>mysql-connector-j</artifactId>
+@@ -91,6 +86,11 @@
+                     </excludes>
+                 </configuration>
+             </plugin>
++            <plugin>
++                <groupId>de.qaware.maven</groupId>
++                <artifactId>go-offline-maven-plugin</artifactId>
++                <version>${go-offline-maven-plugin.version}</version>
++            </plugin>
+         </plugins>
+     </build>
+ 
+diff --git a/src/main/resources/application.properties b/src/main/resources/application.properties
+index d27662d..90387dd 100644
+--- a/src/main/resources/application.properties
++++ b/src/main/resources/application.properties
+@@ -1 +1,6 @@
+ spring.application.name=route-rangers
++spring.datasource.url=jdbc:mysql://mysql:3306/routerangers
++spring.datasource.username=myuser
++spring.datasource.password=secret
++spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
++spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
