@@ -13,12 +13,34 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>route-rangers</name>
     <description>route-rangers</description>
-    <url/>
+    <url>https://github.com/Csaba79-coder/route-rangers</url>
     <licenses>
-        <license/>
+        <license>
+            <name>The MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
     </licenses>
     <developers>
-        <developer/>
+        <developer>
+            <id>adamkaj03</id>
+            <name>Adam Buzas</name>
+            <url>https://github.com/adamkaj03</url>
+        </developer>
+        <developer>
+            <id>huntedev</id>
+            <name>Attila David</name>
+            <url>https://github.com/huntedev</url>
+        </developer>
+        <developer>
+            <id>lnxx-56</id>
+            <name>Bence Magos</name>
+            <url>https://github.com/lnxx-56</url>
+        </developer>
+        <developer>
+            <id>Csaba79-coder</id>
+            <name>Csaba Vadasz</name>
+            <url>https://github.com/Csaba79-coder</url>
+        </developer>
     </developers>
     <scm>
         <developerConnection>scm:git:git@github.com:Csaba79-coder/route-rangers</developerConnection>
