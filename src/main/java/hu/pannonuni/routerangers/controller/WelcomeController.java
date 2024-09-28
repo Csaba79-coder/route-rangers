@@ -1,6 +1,6 @@
 package hu.pannonuni.routerangers.controller;
 
-import com.csaba79coder.api.WelcomeApi;
+import hu.pannonuni.api.WelcomeApi;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
