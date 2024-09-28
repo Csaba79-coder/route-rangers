@@ -229,9 +229,9 @@
                             <inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
                             <generatorName>spring</generatorName>
                             <output>${project.build.directory}/generated-sources/openapi</output>
-                            <apiPackage>com.csaba79coder.api</apiPackage>
+                            <apiPackage>hu.pannonuni.api</apiPackage>
                             <apiNameSuffix>Api</apiNameSuffix>
-                            <modelPackage>com.csaba79coder.model</modelPackage>
+                            <modelPackage>hu.pannonuni.model</modelPackage>
                             <configOptions>
                                 <interfaceOnly>false</interfaceOnly>
                             </configOptions>
