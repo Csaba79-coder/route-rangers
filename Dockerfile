@@ -12,7 +12,7 @@ WORKDIR /app
 COPY --from=deps /root/.m2/repository /root/.m2/repository
 COPY . /app
 
-RUN mvn package -DskipTests -o
+RUN mvn package
 
 
 FROM maven:3-eclipse-temurin-21-alpine AS dev
