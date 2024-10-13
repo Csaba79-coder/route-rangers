@@ -38,7 +38,7 @@ target/*
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-gen/
+/src/main/gen/**
 
 # NetBeans #
 /nbproject/private/
