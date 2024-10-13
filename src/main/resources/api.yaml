@@ -5,6 +5,7 @@ info:
 servers:
   - url: http://localhost:8080
     description: local development server
+
 paths:
   /welcome:
     get:
@@ -18,3 +19,22 @@ paths:
               schema:
                 type: string
                 example: "Welcome to Route Rangers API"
+
+  /user:
+    get:
+      summary: Get user information
+      operationId: renderAllUsers
+      responses:
+        '200':
+          description: User information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: "John Doe"
