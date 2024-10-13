@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-09-28T11:07:28.971143300+02:00[Europe/Budapest]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-10-13T13:33:43.389856200+02:00[Europe/Budapest]")
 
 @Api(value = "welcome", description = "the welcome API")
 public interface WelcomeApi {

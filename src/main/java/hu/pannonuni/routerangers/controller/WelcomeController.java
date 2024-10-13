@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class WelcomeController implements io.swagger.api.WelcomeApi {
+public class WelcomeController implements hu.pannonuni.api.WelcomeApi {
 
     @Override
     public ResponseEntity<String> welcomeMessage() {
