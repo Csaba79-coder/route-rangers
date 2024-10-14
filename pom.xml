@@ -261,7 +261,7 @@
                             <apiNameSuffix>Api</apiNameSuffix>
                             <modelPackage>hu.pannonuni.model</modelPackage>
                             <configOptions>
-                                <interfaceOnly>true</interfaceOnly>
+                                <interfaceOnly>false</interfaceOnly>
                             </configOptions>
                         </configuration>
                     </execution>
