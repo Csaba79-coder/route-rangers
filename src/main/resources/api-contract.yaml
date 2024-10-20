@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  title: Route Rangers API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: local development server
+tags:
+  - name: Welcome
+    description: Welcome message
+  - name: User
+    description: User management
+
+paths:
+  /welcome:
+    get:
+      summary: Welcome message
+      operationId: welcomeMessage
+      tags:
+        - Welcome
+      responses:
+        '200':
+          description: A welcome message
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Welcome to Route Rangers API"
+
+  /users:
+    get:
+      summary: Render all users
+      operationId: renderAllUsers
+      tags:
+        - User
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserModel'
+    post:
+      summary: Create a new user
+      operationId: createUser
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationModel'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserModel'
+        '400':
+          description: Invalid input
+
+components:
+  schemas:
+    UserRegistrationModel:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: csabavadasz79@gmail.com
+        password:
+          type: string
+          example: "password"
+        repeatPassword:
+          type: string
+          example: "password"
+      required:
+        - email
+        - password
+        - repeatPassword
+    UserModel:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        email:
+          type: string
+          format: email
+          example: johndoe@example.com
