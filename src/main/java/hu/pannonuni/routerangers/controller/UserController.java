@@ -1,6 +1,8 @@
 package hu.pannonuni.routerangers.controller;
 
 import hu.pannonuni.api.UserApi;
+import hu.pannonuni.model.UserModel;
+import hu.pannonuni.model.UserRegistrationModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,12 +13,12 @@ import java.util.List;
 public class UserController implements UserApi {
 
     @Override
-    public ResponseEntity<hu.pannonuni.model.UserModel> createUser(hu.pannonuni.model.UserRegistrationModel userRegistrationModel) {
+    public ResponseEntity<hu.pannonuni.model.UserModel> createUser(UserRegistrationModel userRegistrationModel) {
         return ResponseEntity.status(201).body(new hu.pannonuni.model.UserModel());
     }
 
     @Override
-    public ResponseEntity<List<hu.pannonuni.model.UserModel>> renderAllUsers() {
+    public ResponseEntity<List<UserModel>> renderAllUsers() {
         return ResponseEntity.ok(new ArrayList<>());
     }
 }
