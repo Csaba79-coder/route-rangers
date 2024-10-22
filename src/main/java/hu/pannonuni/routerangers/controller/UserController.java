@@ -14,7 +14,7 @@ public class UserController implements UserApi {
 
     @Override
     public ResponseEntity<UserModel> createUser(UserRegistrationModel userRegistrationModel) {
-        return ResponseEntity.status(201).body(new hu.pannonuni.model.UserModel());
+        return ResponseEntity.status(201).body(new UserModel());
     }
 
     @Override
