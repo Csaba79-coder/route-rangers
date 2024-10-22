@@ -13,7 +13,7 @@ import java.util.List;
 public class UserController implements UserApi {
 
     @Override
-    public ResponseEntity<hu.pannonuni.model.UserModel> createUser(UserRegistrationModel userRegistrationModel) {
+    public ResponseEntity<UserModel> createUser(UserRegistrationModel userRegistrationModel) {
         return ResponseEntity.status(201).body(new hu.pannonuni.model.UserModel());
     }
 
