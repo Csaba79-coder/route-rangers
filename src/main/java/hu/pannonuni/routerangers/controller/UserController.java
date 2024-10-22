@@ -1,5 +1,6 @@
 package hu.pannonuni.routerangers.controller;
 
+import hu.pannonuni.api.UserApi;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class UserController implements hu.pannonuni.api.UsersApi {
+public class UserController implements UserApi {
 
     @Override
     public ResponseEntity<hu.pannonuni.model.UserModel> createUser(hu.pannonuni.model.UserRegistrationModel userRegistrationModel) {

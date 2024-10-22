@@ -1,10 +1,11 @@
 package hu.pannonuni.routerangers.controller;
 
+import hu.pannonuni.api.WelcomeApi;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class WelcomeController implements hu.pannonuni.api.WelcomeApi {
+public class WelcomeController implements WelcomeApi {
 
     @Override
     public ResponseEntity<String> welcomeMessage() {

@@ -262,6 +262,8 @@
                             <modelPackage>hu.pannonuni.model</modelPackage>
                             <configOptions>
                                 <interfaceOnly>false</interfaceOnly>
+                                <useTags>true</useTags>
+                                <interfaceNamePrefix></interfaceNamePrefix>
                             </configOptions>
                         </configuration>
                     </execution>

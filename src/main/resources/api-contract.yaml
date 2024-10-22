@@ -6,9 +6,9 @@ servers:
   - url: http://localhost:8080
     description: local development server
 tags:
-  - name: Welcome
+  - name: welcome
     description: Welcome message
-  - name: User
+  - name: user
     description: User management
 
 paths:
@@ -17,7 +17,7 @@ paths:
       summary: Welcome message
       operationId: welcomeMessage
       tags:
-        - Welcome
+        - welcome
       responses:
         '200':
           description: A welcome message
@@ -27,12 +27,14 @@ paths:
                 type: string
                 example: "Welcome to Route Rangers API"
 
-  /users:
+  /auth/users:
+    x-ignore: true
     get:
       summary: Render all users
       operationId: renderAllUsers
+      x-interface-name: UserApi
       tags:
-        - User
+        - user
       responses:
         '200':
           description: A list of users
@@ -43,10 +45,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/UserModel'
     post:
+      x-interface-name: UserApi
       summary: Create a new user
       operationId: createUser
       tags:
-        - User
+        - user
       requestBody:
         required: true
         content:
