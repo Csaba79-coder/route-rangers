@@ -2,7 +2,7 @@ package hu.pannonuni.routerangers.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,11 +14,15 @@ import java.util.Map;
 @RestController
 public class GeocodingController {
 
+    // https://openrouteservice.org/dev/#/api-docs
+    // https://github.com/VROOM-Project/vroom/blob/master/docs/API.md
+
     @Value("${api.token}")
     private String apiToken;
 
     private final String nominatimUrl = "https://nominatim.openstreetmap.org/search?format=json&q=";
     private final String apiUrl = "https://api.openrouteservice.org/v2/directions/";
+    private final String optimizationUrl = "https://api.openrouteservice.org/optimization";
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -79,5 +83,48 @@ public class GeocodingController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error while retrieving route: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/optimize")
+    public ResponseEntity<String> optimize() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", apiToken);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // JSON
+        String requestBody = "{\n" +
+                "  \"jobs\": [\n" +
+                "    {\n" +
+                "      \"id\": 1,\n" +
+                "      \"service\": 300,\n" +
+                "      \"delivery\": [1],\n" +
+                "      \"location\": [2.03655, 48.61128],\n" +
+                "      \"skills\": [1],\n" +
+                "      \"time_windows\": [[32400, 36000]]\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"id\": 2,\n" +
+                "      \"service\": 300,\n" +
+                "      \"delivery\": [1],\n" +
+                "      \"location\": [2.39719, 49.07611],\n" +
+                "      \"skills\": [1]\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  \"vehicles\": [\n" +
+                "    {\n" +
+                "      \"id\": 1,\n" +
+                "      \"profile\": \"driving-car\",\n" +
+                "      \"start\": [2.35044, 48.71764],\n" +
+                "      \"end\": [2.35044, 48.71764],\n" +
+                "      \"capacity\": [4],\n" +
+                "      \"skills\": [1],\n" +
+                "      \"time_window\": [28800, 43200]\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+
+        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+
+        return restTemplate.exchange(optimizationUrl, HttpMethod.POST, entity, String.class);
     }
 }
