@@ -8,6 +8,7 @@ services:
     restart: unless-stopped
     environment:
       - JAVA_HOME=/opt/java/openjdk
+      - OPEN_ROUTE_SERVICE_API_KEY=${OPEN_ROUTE_SERVICE_API_KEY}
     ports:
       - '8080:8080'
     volumes:
@@ -21,4 +22,4 @@ services:
       - 'MYSQL_ROOT_PASSWORD=verysecret'
       - 'MYSQL_USER=myuser'
     ports:
-      - '3306'
+      - '3307:3306'
