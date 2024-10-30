@@ -117,7 +117,14 @@ Recommended Docker commands for building and running the application:
 
 ```bash
 docker build -t app .
-docker run -d -p 8080:8080 --name app app
+```
+
+### Docker file line endings problem
+If you are using Windows, you may encounter a line endings problem when building the Docker image. To fix this, you can use the following command:
+Highly recommended to use Git Bash for Windows.
+
+```bash
+docker compose build --no-cache
 ```
 
 ### Docker Compose
