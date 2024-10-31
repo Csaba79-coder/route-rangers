@@ -2,6 +2,13 @@ openapi: 3.0.0
 info:
   title: Route Rangers API
   version: 1.0.0
+  description: This is the API documentation for the Route Rangers application.
+  contact:
+    name: Csaba Vadasz
+    email: csabavadasz79@gmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 servers:
   - url: http://localhost:8080
     description: local development server
@@ -10,22 +17,94 @@ tags:
     description: Welcome message
   - name: user
     description: User management
+  - name: address
+    description: Address management
 
 paths:
-  /welcome:
+  /auth/address:
     get:
-      summary: Welcome message
-      operationId: welcomeMessage
+      summary: Get all addresses
+      description: Retrieve all addresses with their details, including latitude and longitude.
+      operationId: renderAllAddress
+      x-interface-name: AddressApi
       tags:
-        - welcome
+        - address
       responses:
         '200':
-          description: A welcome message
+          description: A list of all addresses
           content:
             application/json:
               schema:
-                type: string
-                example: "Welcome to Route Rangers API"
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressModel'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Address not found
+        '405':
+          description: Validation exception
+
+    post:
+      summary: Create a new address
+      description: Add a new address with latitude and longitude information.
+      operationId: createAddress
+      x-interface-name: AddressApi
+      tags:
+        - address
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressCreateModel'
+      responses:
+        '201':
+          description: Address created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressModel'
+        '400':
+          description: Invalid input data
+
+  /auth/address/{addressId}:
+    get:
+      summary: Get address by ID
+      description: Retrieve address details including latitude and longitude by the address UUID.
+      operationId: renderAddressById
+      x-interface-name: AddressApi
+      tags:
+        - address
+      parameters:
+        - name: addressId
+          in: path
+          required: true
+          description: The UUID of the address to retrieve.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response with address details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressModel'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Address not found
+        '405':
+          description: Validation exception
 
   /auth/users:
     x-ignore: true
@@ -44,6 +123,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/UserModel'
+
     post:
       x-interface-name: UserApi
       summary: Create a new user
@@ -63,11 +143,124 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserModel'
-        '400':
-          description: Invalid input
+        '404':
+          description: Bad request
+
+  /welcome:
+    get:
+      summary: Welcome message
+      operationId: welcomeMessage
+      tags:
+        - welcome
+      responses:
+        '200':
+          description: A welcome message
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Welcome to Route Rangers API"
 
 components:
   schemas:
+    AddressCreateModel:
+      type: object
+      required:
+        - street
+        - houseNumber
+        - city
+        - postalCode
+      properties:
+        street:
+          type: string
+          description: Street name of the address.
+        houseNumber:
+          type: string
+          description: House number of the address.
+        city:
+          type: string
+          description: City where the address is located.
+        postalCode:
+          type: string
+          description: Postal code of the address.
+        country:
+          $ref: '#/components/schemas/CountryModel'
+        streetType:
+          $ref: '#/components/schemas/StreetTypeModel'
+
+    AddressModel:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier (UUID) of the address.
+        street:
+          type: string
+          description: Street name of the address.
+        streetType:
+          $ref: '#/components/schemas/StreetTypeModel'
+        houseNumber:
+          type: string
+          description: House number of the address.
+        city:
+          type: string
+          description: City where the address is located.
+        postalCode:
+          type: string
+          description: Postal code of the address.
+        country:
+          $ref: '#/components/schemas/CountryModel'
+        latitude:
+          type: number
+          format: double
+          description: Latitude of the address.
+        longitude:
+          type: number
+          format: double
+          description: Longitude of the address.
+
+    CountryModel:
+      type: string
+      enum:
+        - Hungary
+
+    StreetTypeModel:
+      type: string
+      enum:
+        - ROAD
+        - STREET
+        - SQUARE
+        - AVENUE
+        - BOULEVARD
+        - MAIN_SQUARE
+        - PROMENADE
+        - ROW
+        - BANK
+        - GARDEN
+        - ALLEY
+        - PUBLIC_PLACE
+        - DRAIN
+        - CIRCLE
+        - BLOCK
+        - FARM
+        - PLOT
+        - VILLAGE_END
+        - OUTER
+        - BRIDGE
+        - PATH
+        - CITY
+        - CENTER
+        - GREENERY
+        - RESORT
+        - NICH
+        - STOP
+        - DOG_PARK
+        - UNDERPASS
+        - OVERPASS
+        - TRAFFIC_PATH
+        - SELF_SUPPLY
+
     UserRegistrationModel:
       type: object
       properties:
@@ -85,6 +278,7 @@ components:
         - email
         - password
         - repeatPassword
+
     UserModel:
       type: object
       properties:

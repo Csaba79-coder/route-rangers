@@ -1,4 +1,4 @@
-package hu.pannonuni.routerangers.entity;
+package hu.pannonuni.routerangers.entity.base;
 
 import jakarta.persistence.*;
 import lombok.Getter;
