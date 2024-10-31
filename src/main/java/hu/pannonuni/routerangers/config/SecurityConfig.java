@@ -13,11 +13,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/optimize", "/*").permitAll()  // Engedélyezés hitelesítés nélkül a /optimize végpontra
-                        .anyRequest().authenticated()  // Minden más végpont hitelesítést igényel
+                        .requestMatchers("/optimize", "/*", "/auth/**").permitAll()
+                        .anyRequest().authenticated()
                 )
-                .csrf(AbstractHttpConfigurer::disable);  // A CSRF védelem kikapcsolása API hívásokhoz
-
+                .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 }
