@@ -1,5 +1,6 @@
-package hu.pannonuni.routerangers.entity;
+package hu.pannonuni.routerangers.entity.user;
 
+import hu.pannonuni.routerangers.entity.base.Identifier;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
