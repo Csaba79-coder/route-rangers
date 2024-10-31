@@ -2,6 +2,13 @@ openapi: 3.0.0
 info:
   title: Route Rangers API
   version: 1.0.0
+  description: This is the API documentation for the Route Rangers application.
+  contact:
+    name: Csaba Vadasz
+    email: csabavadasz79@gmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 servers:
   - url: http://localhost:8080
     description: local development server
@@ -10,6 +17,8 @@ tags:
     description: Welcome message
   - name: user
     description: User management
+  - name: address
+    description: Address management
 
 paths:
   /welcome:
@@ -44,6 +53,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/UserModel'
+
     post:
       x-interface-name: UserApi
       summary: Create a new user
@@ -70,6 +80,10 @@ paths:
     get:
       summary: Get all addresses
       description: Retrieve all addresses with their details, including latitude and longitude.
+      operationId: renderAllAddress
+      x-interface-name: AddressApi
+      tags:
+        - address
       responses:
         '200':
           description: A list of all addresses
@@ -93,6 +107,10 @@ paths:
     post:
       summary: Create a new address
       description: Add a new address with latitude and longitude information.
+      operationId: createAddress
+      x-interface-name: AddressApi
+      tags:
+        - address
       requestBody:
         required: true
         content:
@@ -109,12 +127,16 @@ paths:
         '400':
           description: Invalid input data
 
-  /auth/address/{id}:
+  /auth/address/{addressId}:
     get:
       summary: Get address by ID
       description: Retrieve address details including latitude and longitude by the address UUID.
+      operationId: renderAddressById
+      x-interface-name: AddressApi
+      tags:
+        - address
       parameters:
-        - name: id
+        - name: addressId
           in: path
           required: true
           description: The UUID of the address to retrieve.
