@@ -163,6 +163,31 @@ paths:
 
 components:
   schemas:
+    AddressCreateModel:
+      type: object
+      required:
+        - street
+        - houseNumber
+        - city
+        - postalCode
+      properties:
+        street:
+          type: string
+          description: Street name of the address.
+        houseNumber:
+          type: string
+          description: House number of the address.
+        city:
+          type: string
+          description: City where the address is located.
+        postalCode:
+          type: string
+          description: Postal code of the address.
+        country:
+          $ref: '#/components/schemas/CountryModel'
+        streetType:
+          $ref: '#/components/schemas/StreetTypeModel'
+
     AddressModel:
       type: object
       properties:
@@ -173,6 +198,8 @@ components:
         street:
           type: string
           description: Street name of the address.
+        streetType:
+          $ref: '#/components/schemas/StreetTypeModel'
         houseNumber:
           type: string
           description: House number of the address.
@@ -183,8 +210,7 @@ components:
           type: string
           description: Postal code of the address.
         country:
-          type: string
-          description: Country of the address.
+          $ref: '#/components/schemas/CountryModel'
         latitude:
           type: number
           format: double
@@ -194,30 +220,10 @@ components:
           format: double
           description: Longitude of the address.
 
-    AddressCreateModel:
-      type: object
-      properties:
-        street:
-          type: string
-          description: Street name of the address.
-        houseNumber:
-          type: string
-          description: House number of the address.
-        city:
-          type: string
-          description: City where the address is located.
-        postalCode:
-          type: string
-          description: Postal code of the address.
-        country:
-          type: string
-          description: Country of the address.
-        streetType:
-          $ref: '#/components/schemas/StreetTypeModel'
-        otherStreetType:
-          type: string
-          description: Please specify if 'other' is selected.
-          nullable: true
+    CountryModel:
+      type: string
+      enum:
+        - Hungary
 
     StreetTypeModel:
       type: string
@@ -254,7 +260,6 @@ components:
         - OVERPASS
         - TRAFFIC_PATH
         - SELF_SUPPLY
-        - OTHER
 
     UserRegistrationModel:
       type: object

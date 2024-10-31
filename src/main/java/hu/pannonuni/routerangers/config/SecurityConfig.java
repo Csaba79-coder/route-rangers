@@ -13,7 +13,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/optimize", "/*", "/auth/**").permitAll()
+                        .requestMatchers("/optimize", "/*", "/auth/**", "/api/geocoding/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable);
