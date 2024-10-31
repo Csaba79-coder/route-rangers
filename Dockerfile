@@ -24,4 +24,9 @@ COPY ./docker-entrypoint.sh /docker-entrypoint.sh
 RUN apk add inotify-tools
 RUN chmod +x /docker-entrypoint.sh
 
+ENV JPDA_ADDRESS=${JPDA_ADDRESS}
+ENV JPDA_TRANSPORT=${JPDA_TRANSPORT}
+
+EXPOSE 5005
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
