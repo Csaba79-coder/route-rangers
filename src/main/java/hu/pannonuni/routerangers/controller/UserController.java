@@ -15,7 +15,7 @@ import java.util.List;
 public class UserController implements UserApi {
 
     @Override
-    public ResponseEntity<UserModel> createUser(UserRegistrationModel userRegistrationModel) {
+    public ResponseEntity<UserModel> register(UserRegistrationModel userRegistrationModel) {
         return ResponseEntity.status(201).body(new UserModel());
     }
 

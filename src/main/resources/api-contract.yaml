@@ -126,8 +126,8 @@ paths:
 
     post:
       x-interface-name: UserApi
-      summary: Create a new user
-      operationId: createUser
+      summary: Register a new user
+      operationId: register
       tags:
         - user
       requestBody:
@@ -290,3 +290,9 @@ components:
           type: string
           format: email
           example: johndoe@example.com
+        role:
+          type: string
+          example: ADMIN
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
