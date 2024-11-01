@@ -9,8 +9,11 @@ services:
     environment:
       - JAVA_HOME=/opt/java/openjdk
       - OPEN_ROUTE_SERVICE_API_KEY=${OPEN_ROUTE_SERVICE_API_KEY}
+      - JPDA_ADDRESS=*:5005
+      - JPDA_TRANSPORT=dt_socket
     ports:
       - '8080:8080'
+      - '5005:5005'
     volumes:
       - ./:/app
 
