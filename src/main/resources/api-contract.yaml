@@ -19,6 +19,8 @@ tags:
     description: User management
   - name: address
     description: Address management
+  - name: vehicle
+    description: Vehicle management
 
 paths:
   /auth/address:
@@ -145,6 +147,79 @@ paths:
                 $ref: '#/components/schemas/UserModel'
         '404':
           description: Bad request
+
+  /auth/vehicles:
+    post:
+      summary: Create a new vehicle (Van or Track)
+      description: Add a new vehicle to the system.
+      operationId: createVehicle
+      x-interface-name: VehicleApi
+      tags:
+        - vehicle
+      requestBody:
+        description: Vehicle data for creating a new entry
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/VanCreateRequest'
+                - $ref: '#/components/schemas/TrackCreateRequest'
+      responses:
+        '201':
+          description: Vehicle created successfully
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/VanResponse'
+                  - $ref: '#/components/schemas/TrackResponse'
+        '400':
+          description: Invalid input data
+
+    get:
+      summary: List all vehicles
+      description: Render all vehicles with their details.
+      operationId: renderAllVehicles
+      x-interface-name: VehicleApi
+      tags:
+        - vehicle
+      responses:
+        '200':
+          description: A list of vehicles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VehicleResponse'
+
+  /vehicles/{vehicleId}:
+    get:
+      summary: Get details of a specific vehicle
+      description: Render details of a specific vehicle by its ID.
+      operationId: renderVehicleById
+      x-interface-name: VehicleApi
+      tags:
+        - vehicle
+      parameters:
+        - in: path
+          name: vehicleId
+          required: true
+          schema:
+            type: integer
+          description: ID of the vehicle to retrieve
+      responses:
+        '200':
+          description: Vehicle details retrieved successfully
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/VanResponse'
+                  - $ref: '#/components/schemas/TrackResponse'
+        '404':
+          description: Vehicle not found
 
   /welcome:
     get:
@@ -290,3 +365,84 @@ components:
           type: string
           format: email
           example: johndoe@example.com
+
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        licensePlate:
+          type: string
+          example: ABC123
+        numberOfAxles:
+          type: integer
+          example: 2
+        maxLoadHeight:
+          type: number
+          format: double
+          example: 3.5
+        maxLoadWeight:
+          type: number
+          format: double
+          example: 10000
+      required:
+        - licensePlate
+        - numberOfAxles
+
+    VanCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/Vehicle'
+        - type: object
+          properties:
+            refrigerated:
+              type: boolean
+              example: true
+            maxLoadVolume:
+              type: number
+              format: double
+              example: 20.0
+
+    TrackCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/Vehicle'
+        - type: object
+          properties:
+            hasTrailer:
+              type: boolean
+              example: false
+            trailerLoadCapacity:
+              type: number
+              format: double
+              example: 30.0
+
+    VanResponse:
+      allOf:
+        - $ref: '#/components/schemas/Vehicle'
+        - type: object
+          properties:
+            refrigerated:
+              type: boolean
+              example: true
+            maxLoadVolume:
+              type: number
+              format: double
+              example: 20.0
+
+    TrackResponse:
+      allOf:
+        - $ref: '#/components/schemas/Vehicle'
+        - type: object
+          properties:
+            hasTrailer:
+              type: boolean
+              example: false
+            trailerLoadCapacity:
+              type: number
+              format: double
+              example: 30.0
+
+    VehicleResponse:
+      oneOf:
+        - $ref: '#/components/schemas/VanResponse'
+        - $ref: '#/components/schemas/TrackResponse'
