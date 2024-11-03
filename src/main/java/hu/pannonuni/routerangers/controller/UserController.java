@@ -3,9 +3,11 @@ package hu.pannonuni.routerangers.controller;
 import hu.pannonuni.api.UserApi;
 import hu.pannonuni.model.UserLoginModel;
 import hu.pannonuni.model.UserModel;
+import hu.pannonuni.model.UserRegisterResponseModel;
 import hu.pannonuni.model.UserRegistrationModel;
 import hu.pannonuni.routerangers.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +23,9 @@ public class UserController implements UserApi {
     private final AuthenticationService authenticationService;
 
     @Override
-    public ResponseEntity<UserModel> register(UserRegistrationModel userRegistrationModel) {
-        return ResponseEntity.ok(authenticationService.register(userRegistrationModel));
+    public ResponseEntity<UserRegisterResponseModel> register(UserRegistrationModel userRegistrationModel) {
+        UserRegisterResponseModel responseModel = authenticationService.register(userRegistrationModel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseModel);
     }
 
     @Override

@@ -1,17 +1,20 @@
 package hu.pannonuni.routerangers.service;
 
-import hu.pannonuni.model.UserLoginModel;
-import hu.pannonuni.model.UserModel;
-import hu.pannonuni.model.UserRegistrationModel;
+import hu.pannonuni.model.*;
+import hu.pannonuni.routerangers.controller.exception.EntityAlreadyExistsException;
 import hu.pannonuni.routerangers.entity.user.User;
 import hu.pannonuni.routerangers.persistence.UserRepository;
 import hu.pannonuni.routerangers.util.Blacklist;
-import hu.pannonuni.routerangers.value.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.InputMismatchException;
 
 @Service
 @RequiredArgsConstructor
@@ -25,22 +28,41 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
-    public UserModel register(UserRegistrationModel userRegistrationModel) {
+    public UserRegisterResponseModel register(UserRegistrationModel userRegistrationModel) {
+        checkTwoPasswordEquality(userRegistrationModel.getPassword(), userRegistrationModel.getRepeatPassword());
+        checkExistUserWithThisEmail(userRegistrationModel.getEmail());
         User user = getUserFromUserRegistrationModel(userRegistrationModel);
         userRepository.save(user);
 
-        var jwtToken = jwtService.generateToken(user);
+        UserRegisterResponseModel userRegisterResponseModel = getUserUserRegisterResponseModelFromUser(user);
+        return userRegisterResponseModel;
+    }
 
-        UserModel userModel = getUserModelFromUser(user);
-        userModel.setToken(jwtToken);
-        return userModel;
+    private void checkTwoPasswordEquality(String password, String repeatPassword) {
+        if(!password.equals(repeatPassword)){
+            throw new InputMismatchException(String.format("The password and the repeat password is not equal"));
+        }
+    }
+
+    private void checkExistUserWithThisEmail(String email) {
+        if(userRepository.existsByEmail(email)) {
+            throw new EntityAlreadyExistsException(String.format("The user already exists with this email: %s", email));
+        }
+    }
+
+    private UserRegisterResponseModel getUserUserRegisterResponseModelFromUser(User user) {
+        UserRegisterResponseModel userRegisterResponseModel = new UserRegisterResponseModel();
+        userRegisterResponseModel.setId(user.getId());
+        userRegisterResponseModel.setEmail(user.getEmail());
+        userRegisterResponseModel.setRole(user.getRole());
+        return userRegisterResponseModel;
     }
 
     private UserModel getUserModelFromUser(User user) {
         UserModel userModel = new UserModel();
         userModel.setId(user.getId());
         userModel.setEmail(user.getEmail());
-        userModel.setRole(user.getRole().toString());
+        userModel.setRole(user.getRole());
         return userModel;
     }
 
@@ -53,12 +75,16 @@ public class AuthenticationService {
     }
 
     public UserModel login(UserLoginModel userLoginModel) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        userLoginModel.getEmail(),
-                        userLoginModel.getPassword()
-                )
-        );
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            userLoginModel.getEmail(),
+                            userLoginModel.getPassword()
+                    )
+            );
+        } catch (BadCredentialsException e) {
+            throw new InputMismatchException("Invalid email or password");
+        }
         var user = userRepository.findByEmail(userLoginModel.getEmail()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         UserModel userModel = getUserModelFromUser(user);

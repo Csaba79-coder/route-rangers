@@ -30,10 +30,8 @@ public class SecurityFilterConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/optimize", "/*", "/auth/*", "/api/geocoding/**", "/auth/users/register",
-                                "/auth/users/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/auth/address/{addressId}").hasRole("USER")
-                        .requestMatchers(HttpMethod.POST, "/auth/users/logout").hasRole("USER")
+                        .requestMatchers("/optimize", "/api/**").permitAll()
+                        .requestMatchers("/auth/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
 

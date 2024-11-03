@@ -125,7 +125,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/UserModel'
-  /auth/users/register:
+  /api/users/register:
     post:
       x-interface-name: UserApi
       summary: Register a new user
@@ -144,11 +144,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserModel'
+                $ref: '#/components/schemas/UserRegisterResponseModel'
         '404':
           description: Bad request
 
-  /auth/users/login:
+  /api/users/login:
     post:
       x-interface-name: UserApi
       summary: Login user
@@ -407,7 +407,19 @@ components:
         - email
         - password
         - repeatPassword
-
+    UserRegisterResponseModel:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        email:
+          type: string
+          format: email
+          example: johndoe@example.com
+        role:
+          $ref: '#/components/schemas/Role'
     UserLoginModel:
       type: object
       properties:
@@ -434,8 +446,7 @@ components:
           format: email
           example: johndoe@example.com
         role:
-          type: string
-          example: "USER"
+          $ref: '#/components/schemas/Role'
         token:
           type: string
           example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."

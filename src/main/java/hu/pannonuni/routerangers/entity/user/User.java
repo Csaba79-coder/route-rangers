@@ -1,11 +1,8 @@
 package hu.pannonuni.routerangers.entity.user;
 
+import hu.pannonuni.model.Role;
 import hu.pannonuni.routerangers.entity.base.Identifier;
-import hu.pannonuni.routerangers.value.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 public class User extends Identifier implements UserDetails {
 
+    @Column(unique = true)
     private String email;
 
     private String password;
