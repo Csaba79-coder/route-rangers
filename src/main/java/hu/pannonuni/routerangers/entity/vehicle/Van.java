@@ -9,7 +9,7 @@ import lombok.Setter;
 @Table(name = "van")
 @Getter
 @Setter
-public class Van extends Vehicle{
+public class Van extends Vehicle {
 
     private boolean refrigerated;
     private double maxLoadVolume;

@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "track")
+@Table(name = "truck")
 @Getter
 @Setter
-public class Track extends Vehicle{
+public class Truck extends Vehicle {
 
     private boolean hasTrailer;
     private double trailerLoadCapacity;

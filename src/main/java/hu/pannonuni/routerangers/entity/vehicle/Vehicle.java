@@ -23,6 +23,8 @@ public class Vehicle extends Identifier {
     @Min(1)
     private int numberOfAxles;
 
-    private double maxLoadHeight;
-    private double maxLoadWeight;
+    private Integer weigh;
+    private Integer width;
+    private Integer length;
+    private Integer height;
 }
