@@ -6,13 +6,11 @@ import hu.pannonuni.routerangers.entity.user.User;
 import hu.pannonuni.routerangers.persistence.UserRepository;
 import hu.pannonuni.routerangers.util.Blacklist;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.InputMismatchException;
 
@@ -34,8 +32,7 @@ public class AuthenticationService {
         User user = getUserFromUserRegistrationModel(userRegistrationModel);
         userRepository.save(user);
 
-        UserRegisterResponseModel userRegisterResponseModel = getUserUserRegisterResponseModelFromUser(user);
-        return userRegisterResponseModel;
+        return getUserUserRegisterResponseModelFromUser(user);
     }
 
     private void checkTwoPasswordEquality(String password, String repeatPassword) {
