@@ -32,7 +32,7 @@ public class GeocodingTestController {
         String url = nominatimUrl + address.replace(" ", "+");
         JsonNode response = restTemplate.getForObject(url, JsonNode.class);
 
-        if (response != null && response.isArray() && response.size() > 0) {
+        if (response != null && response.isArray() && !response.isEmpty()) {
             JsonNode location = response.get(0);
 
             // Extract the relevant fields like latitude, longitude, and display name

@@ -1,8 +1,7 @@
 package hu.pannonuni.routerangers.controller;
 
-import hu.pannonuni.routerangers.entity.cargo.Box;
 import hu.pannonuni.routerangers.entity.cargo.BoxPlacement;
-import hu.pannonuni.routerangers.entity.vehicle.Truck;
+import hu.pannonuni.routerangers.entity.vehicle.TruckPackingRequest;
 import hu.pannonuni.routerangers.service.TruckPackingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,7 @@ public class TruckPackingController {
     private final TruckPackingService truckPackingService;
 
     @PostMapping("/truck-packing")
-    public ResponseEntity<List<BoxPlacement>> loadingCargo(@RequestBody List<Box> boxes, @RequestBody Truck truck) {
-        return ResponseEntity.status(200).body(truckPackingService.packBoxes(boxes, truck));
+    public ResponseEntity<List<BoxPlacement>> loadingCargo(@RequestBody TruckPackingRequest request) {
+        return ResponseEntity.status(200).body(truckPackingService.packBoxes(request.getBoxes(), request.getTruck()));
     }
 }
