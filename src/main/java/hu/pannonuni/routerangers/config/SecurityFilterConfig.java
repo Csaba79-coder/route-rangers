@@ -23,7 +23,7 @@ public class SecurityFilterConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/optimize", "/api/**").permitAll()
+                        .requestMatchers("/optimize", "/api/**", "/auth/truck-packing").permitAll()
                         .requestMatchers("/auth/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
