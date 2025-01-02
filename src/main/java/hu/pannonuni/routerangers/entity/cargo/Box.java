@@ -16,8 +16,8 @@ import lombok.Setter;
 @Table(name = "box")
 public class Box extends Identifier {
 
-    private Integer weigh;
     private Integer width;
     private Integer length;
     private Integer height;
+    private Integer weight;
 }

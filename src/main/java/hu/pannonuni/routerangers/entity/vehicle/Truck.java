@@ -1,16 +1,27 @@
 package hu.pannonuni.routerangers.entity.vehicle;
 
+import hu.pannonuni.routerangers.entity.base.Identifier;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "truck")
 @Getter
 @Setter
-public class Truck extends Vehicle {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Truck extends Identifier {
 
-    private boolean hasTrailer;
-    private double trailerLoadCapacity;
+    private Integer width;
+    private Integer length;
+    private Integer height;
+    private Integer weight;
+
+    @NotNull(message = "License plate must not be null.")
+    private String licensePlate;
 }
