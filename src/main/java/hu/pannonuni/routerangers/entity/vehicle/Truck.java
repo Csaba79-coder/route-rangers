@@ -17,10 +17,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Truck extends Identifier {
 
-    private Integer weigh;
     private Integer width;
     private Integer length;
     private Integer height;
+    private Integer weight;
 
     @NotNull(message = "License plate must not be null.")
     private String licensePlate;
