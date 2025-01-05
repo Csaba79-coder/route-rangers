@@ -48,7 +48,7 @@ public class JwtService {
                 .setClaims(extraClaims) // extraClaims beállítása
                 .setSubject(userDetails.getUsername()) // a felhasználó neve (vagy más információ) a subject
                 .setIssuedAt(new Date(System.currentTimeMillis())) // létrehozás dátuma
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // lejárati dátum
+                .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 365 * 10)) // lejárati dátum
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256) // aláírás
                 .compact(); // a token véglegesítése
     }
