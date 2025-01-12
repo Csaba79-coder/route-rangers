@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static hu.pannonuni.routerangers.util.BoxSorter.sortBoxes;
+
 @Service
 public class TruckPackingService {
 
-    public List<BoxPlacement> packBoxes(List<Box> boxes, Truck truck) {
+    public List<BoxPlacement> packBoxes(List<Box> boxesInfo, Truck truck) {
         List<BoxPlacement> placements = new ArrayList<>();
+        List<Box> boxes = sortBoxes(boxesInfo); // Dobozok rendezése a heurisztikus algoritumus részére
         int x = 0, y = 0, z = 0; // Kezdő koordináták
         int layer = 1; // Kezdő réteg
 
