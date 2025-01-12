@@ -7,23 +7,13 @@ import java.util.List;
 
 public class BoxSorter {
 
-    // updating the logic with reversed order! as the hugest and heaviest boxes should be placed first
     public static List<Box> sortBoxes(List<Box> boxes) {
-        List<Box> sortedByWidth = boxes.stream()
-                .sorted(Comparator.comparingInt(Box::getWidth).reversed())
-                .toList();
-
-        List<Box> sortedByLength = sortedByWidth.stream()
-                .sorted(Comparator.comparingInt(Box::getLength).reversed())
-                .toList();
-
-
-        List<Box> sortedByHeight = sortedByLength.stream()
-                .sorted(Comparator.comparingInt(Box::getHeight).reversed())
-                .toList();
-
-        return sortedByHeight.stream()
-                .sorted(Comparator.comparing(Box::getWeight).reversed())
+        // Comparator-t, amely mindegyik szempontot figyelembe veszi. Metódus unit teszttel ellenőrizve.
+        return boxes.stream()
+                .sorted(Comparator.comparingInt(Box::getWidth).reversed() // Szélesség csökkenő
+                        .thenComparing(Comparator.comparingInt(Box::getLength).reversed()) // Hosszúság csökkenő
+                        .thenComparing(Comparator.comparingInt(Box::getHeight).reversed()) // Magasság csökkenő
+                        .thenComparing(Comparator.comparingInt(Box::getWeight).reversed())) // Súly csökkenő
                 .toList();
     }
 
