@@ -8,13 +8,17 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static hu.pannonuni.routerangers.util.BoxSorter.sortBoxes;
+
 @Service
 public class TruckPackingService {
 
-    public List<BoxPlacement> packBoxes(List<Box> boxes, Truck truck) {
+    public List<BoxPlacement> packBoxes(List<Box> boxesInfo, Truck truck) {
         List<BoxPlacement> placements = new ArrayList<>();
+        List<Box> boxes = sortBoxes(boxesInfo); // Dobozok rendezése a heurisztikus algoritmus részére
         int x = 0, y = 0, z = 0; // Kezdő koordináták
         int layer = 1; // Kezdő réteg
+        double currentWeight = 0; // Az összesített súly
 
         // Iterálj a dobozokon, hogy pakold őket
         for (Box box : boxes) {
@@ -37,6 +41,12 @@ public class TruckPackingService {
                 }
             }
 
+            // Ellenőrizzük, hogy a súlyterhelés nem lépi-e túl a maximális terhelést
+            if (currentWeight + box.getWeight() > truck.getWeight()) {
+                System.out.println("A teherautó súlyhatárát meghaladja a(z) " + box.getId() + " doboz.");
+                continue; // Ha túlmegy a súlyhatáron, lépjünk a következő dobozra
+            }
+
             // Kiszámítjuk a doboz végi koordinátáit
             int endX = x + box.getWidth();
             int endY = y + box.getLength();
@@ -47,6 +57,9 @@ public class TruckPackingService {
 
             // Frissítjük az x koordinátát a következő dobozhoz
             x = endX; // Az aktuális doboz vége legyen a következő doboz kezdete
+
+            // Frissítjük az összesített súlyt
+            currentWeight += box.getWeight();
         }
 
         return placements;
