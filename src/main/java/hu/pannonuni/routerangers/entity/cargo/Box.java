@@ -20,4 +20,5 @@ public class Box extends Identifier {
     private Integer length;
     private Integer height;
     private Integer weight;
+    private Integer number;
 }
